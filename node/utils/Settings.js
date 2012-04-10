@@ -19,10 +19,7 @@
  * limitations under the License.
  */
 
-var fs = require("fs");
 var os = require("os");
-var path = require('path');
-var argv = require('./Cli').argv;
 var url = require('url');
 
 /**
@@ -33,7 +30,7 @@ exports.ip = "0.0.0.0";
 /**
  * The Port ep-lite should listen to
  */
-exports.port = 3000;
+exports.port = process.env.PORT;
 /*
  * The Type of the database
  */
@@ -50,7 +47,7 @@ exports.dbSettings = {
 /**
  * The default Text of a new pad
  */
-exports.defaultPadText = "Welcome to Etherpad Lite!\n\nThis pad text is synchronized as you type, so that everyone viewing this page sees the same text. This allows you to collaborate seamlessly on documents!\n\nEtherpad Lite on Github: http:\/\/j.mp/ep-lite\n";
+exports.defaultPadText = process.env.ETHERPAD_DEFAULT_TEXT || 'Welcome';
 
 /**
  * A flag that requires any user to have a valid session (via the api) before accessing a pad
@@ -97,50 +94,5 @@ exports.abiwordAvailable = function()
   else
   {
     return "no";
-  }
-}
-
-// Discover where the settings file lives
-var settingsFilename = argv.settings || "settings.json";
-var settingsPath = settingsFilename.charAt(0) == '/' ? '' : path.normalize(__dirname + "/../../");
-
-//read the settings sync
-var settingsStr = fs.readFileSync(settingsPath + settingsFilename).toString();
-
-//remove all comments
-settingsStr = settingsStr.replace(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/gm,"").replace(/#.*/g,"").replace(/\/\/.*/g,"");
-
-//try to parse the settings
-var settings;
-try
-{
-  settings = JSON.parse(settingsStr);
-}
-catch(e)
-{
-  console.error("There is a syntax error in your settings.json file");
-  console.error(e.message);
-  process.exit(1);
-}
-
-//loop trough the settings
-for(var i in settings)
-{
-  //test if the setting start with a low character
-  if(i.charAt(0).search("[a-z]") !== 0)
-  {
-    console.warn("Settings should start with a low character: '" + i + "'");
-  }
-
-  //we know this setting, so we overwrite it
-  if(exports[i] !== undefined)
-  {
-    exports[i] = settings[i];
-  }
-  //this setting is unkown, output a warning and throw it away
-  else
-  {
-    console.warn("Unkown Setting: '" + i + "'");
-    console.warn("This setting doesn't exist or it was removed");
   }
 }
