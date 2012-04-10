@@ -1,7 +1,5 @@
 node_modules
 settings.json
-static/js/jquery.js
-static/js/prefixfree.js
 APIKEY.txt
 bin/abiword.exe
 bin/node.exe
