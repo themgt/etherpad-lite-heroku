@@ -20,6 +20,7 @@
  * limitations under the License.
  */
 
+var ERR = require("async-stacktrace");
 var log4js = require('log4js');
 var os = require("os");
 var socketio = require('socket.io');
@@ -29,7 +30,6 @@ var db = require('./db/DB');
 var async = require('async');
 var express = require('express');
 var path = require('path');
-var minify = require('./utils/Minify');
 var CachingMiddleware = require('./utils/caching_middleware');
 var Yajsml = require('yajsml');
 var formidable = require('formidable');
@@ -141,27 +141,10 @@ async.waterfall([
       gracefulShutdown();
     });
     
-    // Cache both minified and static.
+    // Cache static.
     var assetCache = new CachingMiddleware;
-    app.all('/(minified|static)/*', assetCache.handle);
+    app.all('/static/*', assetCache.handle);
 
-    // Minify will serve static files compressed (minify enabled). It also has
-    // file-specific hacks for ace/require-kernel/etc.
-    app.all('/static/:filename(*)', minify.minify);
-
-    // Setup middleware that will package JavaScript files served by minify for
-    // CommonJS loader on the client-side.
-    var jsServer = new (Yajsml.Server)({
-      rootPath: 'minified/'
-    , rootURI: 'http://localhost:' + settings.port + '/static/js/'
-    });
-    var StaticAssociator = Yajsml.associators.StaticAssociator;
-    var associations =
-      Yajsml.associators.associationsForSimpleMapping(minify.tar);
-    var associator = new StaticAssociator(associations);
-    jsServer.setAssociator(associator);
-    app.use(jsServer);
-    
     //checks for padAccess
     function hasPadAccess(req, res, callback)
     {
@@ -481,10 +464,6 @@ async.waterfall([
         socketIOLogger.error.apply(socketIOLogger, arguments);
       },
     });
-    
-    //minify socket.io javascript
-    if(settings.minify)
-      io.enable('browser client minification');
     
     var padMessageHandler = require("./handler/PadMessageHandler");
     var timesliderMessageHandler = require("./handler/TimesliderMessageHandler");
