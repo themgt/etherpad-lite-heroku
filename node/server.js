@@ -140,8 +140,10 @@ async.waterfall([
       console.error(err.stack ? err.stack : err.toString());
       gracefulShutdown();
     });
-   
-    app.use(express.static(__dirname + '/static'));
+    
+    // Cache static.
+    var assetCache = new CachingMiddleware;
+    app.all('/static/*', assetCache.handle);
 
     //checks for padAccess
     function hasPadAccess(req, res, callback)
