@@ -25,6 +25,7 @@ var log4js = require('log4js');
 var os = require("os");
 var socketio = require('socket.io');
 var fs = require('fs');
+var url = require('url');
 var settings = require('./utils/Settings');
 var db = require('./db/DB');
 var async = require('async');
@@ -42,7 +43,6 @@ var readOnlyManager;
 var padManager;
 var securityManager;
 var socketIORouter;
-var url = require('url');
 
 //try to get the git version
 var version = "";
