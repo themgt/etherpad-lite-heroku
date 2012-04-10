@@ -142,9 +142,9 @@ async.waterfall([
     });
    
     //serve static files
-    app.get('/static/css/:stylesheet.css', function(req, res, next)
+    app.get('/static/:statictype/:staticfile.:staticext', function(req, res, next)
     {    
-      var filePath = path.normalize(__dirname + "/../static/css/" + req.params.stylesheet + ".css");
+      var filePath = path.normalize(__dirname + "/../static/" + req.params.statictype + "/" + req.params.staticfile + "." + req.params.staticext);
       res.sendfile(filePath, { maxAge: exports.maxAge });
     });
     
