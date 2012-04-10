@@ -141,13 +141,7 @@ async.waterfall([
       gracefulShutdown();
     });
    
-    //serve static files
-    app.get('/static/:staticfile', function(req, res, next)
-    {    
-      var filePath = path.normalize(__dirname + "/../static/" + req.params.staticfile);
-      res.sendfile(filePath, { maxAge: exports.maxAge });
-    });
-    
+    app.use(express.static(__dirname + '/static'));
 
     //checks for padAccess
     function hasPadAccess(req, res, callback)
