@@ -23,6 +23,7 @@ var fs = require("fs");
 var os = require("os");
 var path = require('path');
 var argv = require('./Cli').argv;
+var url = require('url');
 
 /**
  * The IP ep-lite should listen to
@@ -32,15 +33,20 @@ exports.ip = "0.0.0.0";
 /**
  * The Port ep-lite should listen to
  */
-exports.port = 9001;
+exports.port = 3000;
 /*
  * The Type of the database
  */
-exports.dbType = "dirty";
+exports.dbType = "postgres";
 /**
  * This setting is passed with dbType to ueberDB to set up the database
  */
-exports.dbSettings = { "filename" : "../var/dirty.db" };
+exports.dbSettings = {
+                      "user"    : url.parse(process.env.DATABASE_URL).auth.split(':')[0], 
+                      "password": url.parse(process.env.DATABASE_URL).auth.split(':')[1], 
+                      "host"    : url.parse(process.env.DATABASE_URL).hostname, 
+                      "database": url.parse(process.env.DATABASE_URL).pathname.replace(/^\//, '')
+                     };
 /**
  * The default Text of a new pad
  */
@@ -62,9 +68,9 @@ exports.editOnly = false;
 exports.maxAge = 1000*60*60*6; // 6 hours
 
 /**
- * A flag that shows if minification is enabled or not
+ * A flag that shows if minification is enabled or not. Heroku has problems with this.
  */
-exports.minify = true;
+exports.minify = false;
 
 /**
  * The path of the abiword executable
