@@ -9,12 +9,6 @@
   "port" : 3000,
   
   "dbType" : "postgres",
-  "dbSettings" : {
-                  "user"    : url.parse(process.env.DATABASE_URL).auth.split(':')[0], 
-                  "password": url.parse(process.env.DATABASE_URL).auth.split(':')[1], 
-                  "host"    : url.parse(process.env.DATABASE_URL).hostname, 
-                  "database": url.parse(process.env.DATABASE_URL).pathname.replace(/^\//, '')
-                 },
   
   //the default text of a pad
   "defaultPadText" : "Welcome to Etherpad Lite on Heroku!",

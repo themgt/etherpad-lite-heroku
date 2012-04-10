@@ -27,6 +27,7 @@ var socketio = require('socket.io');
 var fs = require('fs');
 var url = require('url');
 var settings = require('./utils/Settings');
+require('./utils/Heroku');
 var db = require('./db/DB');
 var async = require('async');
 var express = require('express');
