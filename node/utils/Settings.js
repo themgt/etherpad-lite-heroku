@@ -37,18 +37,16 @@ exports.port = 3000;
 /*
  * The Type of the database
  */
-exports.dbType = "postgres";
+exports.dbType = "mysql";
 /**
  * This setting is passed with dbType to ueberDB to set up the database
  */
-console.warn(process.env.DATABASE_URL);
 exports.dbSettings = {
-                      "user"    : url.parse(process.env.DATABASE_URL).auth.split(':')[0], 
-                      "password": url.parse(process.env.DATABASE_URL).auth.split(':')[1], 
-                      "host"    : url.parse(process.env.DATABASE_URL).hostname, 
-                      "database": url.parse(process.env.DATABASE_URL).pathname.replace(/^\//, '')
+                      "user"    : url.parse(process.env.CLEARDB_DATABASE_URL).auth.split(':')[0], 
+                      "password": url.parse(process.env.CLEARDB_DATABASE_URL).auth.split(':')[1], 
+                      "host"    : url.parse(process.env.CLEARDB_DATABASE_URL).hostname, 
+                      "database": url.parse(process.env.CLEARDB_DATABASE_URL).pathname.replace(/^\//, '')
                      };
-console.warn(exports.dbSettings);
 /**
  * The default Text of a new pad
  */
