@@ -23,9 +23,6 @@ var ERR = require("async-stacktrace");
 var settings = require('./Settings');
 var async = require('async');
 var fs = require('fs');
-var cleanCSS = require('clean-css');
-var jsp = require("uglify-js").parser;
-var pro = require("uglify-js").uglify;
 var path = require('path');
 var RequireKernel = require('require-kernel');
 var server = require('../server');
@@ -257,17 +254,6 @@ function getFileCompressed(filename, contentType, callback) {
     if (error || !content) {
       callback(error, content);
     } else {
-      if (settings.minify) {
-        if (contentType == 'text/javascript') {
-          try {
-            content = compressJS([content]);
-          } catch (error) {
-            // silence
-          }
-        } else if (contentType == 'text/css') {
-          content = compressCSS([content]);
-        }
-      }
       callback(null, content);
     }
   });
@@ -281,19 +267,4 @@ function getFile(filename, callback) {
   } else {
     fs.readFile(ROOT_DIR + filename, callback);
   }
-}
-
-function compressJS(values)
-{
-  var complete = values.join("\n");
-  var ast = jsp.parse(complete); // parse code and get the initial AST
-  ast = pro.ast_mangle(ast); // get a new AST with mangled names
-  ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
-  return pro.gen_code(ast); // compressed code here
-}
-
-function compressCSS(values)
-{
-  var complete = values.join("\n");
-  return cleanCSS.process(complete);
 }
