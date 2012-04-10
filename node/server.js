@@ -42,6 +42,7 @@ var readOnlyManager;
 var padManager;
 var securityManager;
 var socketIORouter;
+var url = require('url');
 
 //try to get the git version
 var version = "";

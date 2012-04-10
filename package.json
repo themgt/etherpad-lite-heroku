@@ -7,7 +7,9 @@
   "contributors"   : [
                       { "name": "John McLear", 
                         "name": "Hans Pinckaers",
-                        "name": "Robin Buse" }
+                        "name": "Robin Buse",
+                        "name": "Andy Rossmeissl"
+                      }
                      ],
   "dependencies"   : {
                       "yajsml"              : "1.1.2",
@@ -22,7 +24,8 @@
                       "formidable"          : "1.0.9",
                       "log4js"              : "0.4.1",
                       "jsdom-nocontextifiy" : "0.2.10",
-                      "async-stacktrace"    : "0.0.2"
+                      "async-stacktrace"    : "0.0.2",
+                      "pg"                  : "0.5.4"
                      },
   "devDependencies": {
                       "jshint"  : "*"
