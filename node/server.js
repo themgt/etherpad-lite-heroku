@@ -20,7 +20,6 @@
  * limitations under the License.
  */
 
-var ERR = require("async-stacktrace");
 var log4js = require('log4js');
 var os = require("os");
 var socketio = require('socket.io');
